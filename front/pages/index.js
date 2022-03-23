@@ -1,10 +1,17 @@
 import React from 'react';
-import AppLayout from "../components/Layout/AppLayout.js";
+import { useSelector } from 'react-redux';
+import AppLayout from "../components/Layout/AppLayout";
+import PostForm from "../components/Form/PostForm";
+import PostCard from '../components/PostCard';
 
 const Home = () => {
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const { mainPosts } = useSelector((state) => state.post);
+
   return (
     <AppLayout>
-      <div>Children! next!</div>
+      {isLoggedIn && <PostForm />}
+      {mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
     </AppLayout>
   );
 }
