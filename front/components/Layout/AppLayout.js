@@ -2,45 +2,74 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col } from 'antd';
+import { UserOutlined, QqCircleFilled, ProfileOutlined } from '@ant-design/icons';
 import UserProfile from '../UserProfile';
 import LoginForm from '../Form/LoginForm.js';
-import styled  from 'styled-components';
+import styled, { createGlobalStyle }  from 'styled-components';
 import { useSelector } from 'react-redux';
+
+const MenuBar = styled(Menu)`
+  align-items: center;
+  height: 60px;
+  padding: 0 70px;
+  & button {
+    background-color: black;
+    color: white;
+    border-color: black;
+  }
+`;
+
+const RowLayout = styled(Row)`
+  padding: 0 80px;
+`;
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
+  width: 250px;
+`;
+
+const Global = createGlobalStyle`
+  .ant-row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .ant-col:first-child {
+    padding-left: 0 !important;
+  }
+
+  .ant-col:last-child {
+    padding-right: 0 !important;
+  }
 `;
 
 const AppLayout = ({ children }) => {
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
   return (
     <div>
-      <Menu mode="horizontal">
-        <Menu.Item key="home">
-          <Link href="/"><a>동동</a></Link>
-        </Menu.Item>
-        <Menu.Item key="profile">
-          <Link href="/profile"><a>프로필</a></Link> 
+      <Global />
+      <MenuBar mode="horizontal">
+        <Menu.Item key="home" className='test'>
+          <Link href="/"><a><QqCircleFilled style={{ fontSize: '33px', marginTop: '15px' }}/></a></Link>
         </Menu.Item>
         <Menu.Item key="search">
           <SearchInput enterButton />
         </Menu.Item>
-        <Menu.Item key="signup">
-          <Link href="/signup"><a>회원가입</a></Link>
+        <Menu.Item key="profile">
+          <Link href="/profile"><a><ProfileOutlined style={{ fontSize: '23px', marginTop: '18px'}} /></a></Link> 
         </Menu.Item>
-      </Menu>
-      <Row gutter={8}>
-        <Col xs={24} md={6}>
+        <Menu.Item key="signup">
+          <Link href="/signup"><a><UserOutlined style={{ fontSize: '23px', marginTop: '16px'}} /></a></Link>
+        </Menu.Item>
+      </MenuBar>
+      <RowLayout gutter={8}>
+        <Col xs={24} md={8}>
           {isLoggedIn ? <UserProfile /> : <LoginForm />}
         </Col>
-        <Col xs={24} md={12}>
+        <Col style={{ marginTop: '20px' }} xs={24} md={16}>
           {children}
         </Col>
-        <Col xs={24} md={6}>
-          <a href="https://github.com/Jeong-ki" target="_blank" rel="noreferrer noopener">jeong's github</a>
-        </Col>
-      </Row>
+      </RowLayout>
     </div>
   )
 };
