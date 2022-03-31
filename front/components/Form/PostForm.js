@@ -1,7 +1,14 @@
 import React, { useCallback, useRef, useState } from "react";
+import styled from 'styled-components';
 import { Form, Input, Button } from "antd"
 import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../../reducers/post";
+
+const UploadBtn = styled(Button)`
+  float: right;
+  background: black;
+  border-color: black;
+`;
 
 const PostForm = () => {
   const { imagePaths } = useSelector((state) => state.post);
@@ -23,8 +30,9 @@ const PostForm = () => {
   }, [imageInput.current]);
 
   return (
-    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
+    <Form style={{ margin: '0 0 10px' }} encType="multipart/form-data" onFinish={onSubmit}>
       <Input.TextArea 
+        style={{ marginBottom: '5px' }}
         value={text} 
         onChange={onChangeText} 
         maxLength={140} 
@@ -33,7 +41,7 @@ const PostForm = () => {
       <div>
         <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <Button type="primary" style={{ float: 'right'}} htmlType="submit">짹짹</Button>
+        <UploadBtn type="primary" htmlType="submit">게시</UploadBtn>
       </div>
       <div>
         {imagePaths.map((v) => {

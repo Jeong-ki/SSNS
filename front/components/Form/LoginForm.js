@@ -8,6 +8,17 @@ import { loginAction } from '../../reducers/user';
 
 const ButtonWrapper = styled.div`
   margin-top: 10px;
+
+  & .loginBtn {
+    background: black;
+    border-color: black;
+    margin-right: 5px;
+
+    &:hover {
+      background: #1890ff;
+      border-color: #1890ff;
+    }
+  }
 `;
 
 const FormWrapper = styled(Form)`
@@ -44,7 +55,7 @@ const LoginForm = () => {
           />
         </div>
         <ButtonWrapper>
-          <Button type="primary" htmlType="submit" loading={false}>로그인</Button>
+          <Button className="loginBtn" type="primary" htmlType="submit" loading={false}>로그인</Button>
           <Link href="/signup"><a><Button>회원가입</Button></a></Link>
         </ButtonWrapper>
       </fieldset>

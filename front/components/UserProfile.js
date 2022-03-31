@@ -11,6 +11,7 @@ const UserProfile = () => {
 
   return (
     <Card
+      style={{ margin: '20px 10px 0 0' }}
       actions={[
         <div key="twit">짹짹<br />0</div>,
         <div key="followings">팔로잉<br />0</div>,

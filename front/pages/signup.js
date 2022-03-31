@@ -76,7 +76,7 @@ const Signup = () => {
           {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
         </div>
         <div style={{ marginTop: 10 }}>
-          <Button type="primary" htmlType="submit">가입하기</Button>
+          <Button style={{ background: "gray", border: "gray" }} type="primary" htmlType="submit">가입하기</Button>
         </div>
       </Form>
     </AppLayout>

@@ -6,6 +6,11 @@ const NicknameForm = styled(Form)`
   margin-bottom: 20px;
   border: 1px solid #d9d9d9;
   padding: 20px;
+
+  & button {
+    background: black;
+    border-color: black;
+  }
 `;
 
 const NicknameEditForm = () => {
