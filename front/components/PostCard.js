@@ -54,7 +54,7 @@ const PostCard = ({ post }) => {
       {commentFormOpened && (
         <div>
           <CommentForm post={post} />
-          <List 
+          <List
             header={`${post.Comments.length}개의 댓글`}
             itemLayout="horizontal"
             dataSource={post.Comments}

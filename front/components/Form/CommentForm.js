@@ -1,24 +1,15 @@
 import { Form, Input, Button } from 'antd';
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import styled  from 'styled-components';
 
 import useInput from '../../hooks/useInput';
 import { ADD_COMMENT_REQUEST } from '../../reducers/post';
 
-const CommentUploadBtn = styled(Button)`
-  position: absolute;
-  right: 0;
-  bottom: -40px;
-  background: #4c4c4c;
-  border-color: #4c4c4c;
-`;
-
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
   useEffect(() => {
@@ -28,7 +19,6 @@ const CommentForm = ({ post }) => {
   }, [addCommentDone]);
 
   const onSubmitComment = useCallback(() => {
-    console.log(post.id, commentText);
     dispatch({
       type: ADD_COMMENT_REQUEST,
       data: { content: commentText, postId: post.id, userId: id },
@@ -39,11 +29,14 @@ const CommentForm = ({ post }) => {
     <Form onFinish={onSubmitComment}>
       <Form.Item style={{ position: 'relative', margin: 0 }}>
         <Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
-        <CommentUploadBtn
-          type="primary" 
-          htmlType="submit">
+        <Button
+          style={{ position: 'absolute', background: 'black', borderColor: 'black', right: 0, bottom: -40, zIndex: 1 }}
+          type="primary"
+          htmlType="submit"
+          loading={addCommentLoading}
+        >
           작성
-        </CommentUploadBtn>
+        </Button>
       </Form.Item>
     </Form>
   );
