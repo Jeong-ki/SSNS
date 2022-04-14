@@ -49,7 +49,7 @@ const AppLayout = ({ children }) => {
     <div>
       <Global />
       <MenuBar mode="horizontal">
-        <Menu.Item key="home" className='test'>
+        <Menu.Item key="home">
           <Link href="/"><a><QqCircleFilled style={{ fontSize: '33px', marginTop: '15px' }}/></a></Link>
         </Menu.Item>
         <Menu.Item key="search">
