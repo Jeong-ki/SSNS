@@ -17,7 +17,7 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <img role="presentation" style={{ maxHeight: "350px", maxWidth: "350px", margin: "0 auto" }} src={images[0].src} alt={images[0].src} onClick={onZoom} />
+        <img role="presentation" style={{ maxHeight: "350px", maxWidth: "500px", margin: "0 auto" }} src={images[0].src} alt={images[0].src} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     )
