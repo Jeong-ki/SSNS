@@ -1,8 +1,38 @@
 const express = require('express');
 const { Post, Image ,Comment } = require('../models');
 const { isLoggedIn } = require('./middlewares');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const router = express.Router();
+
+const upload = multer({
+  storage: multer.diskStorage({ // 컴퓨터 하드디스크에 저장 -> s3 같은 클라우드로 저장 위치 변경
+    destination(req, res, done) {
+      done(null, 'uploads'); // uploads 폴더에 저장
+    },
+    filename(req, file, done) { // 고구마.png
+      const ext = path.extname(file.originalname); // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 고구마
+      done(null, basename + new Date().getTime() + ext); // 고구마1846162.png - 파일명 안 겹치게 하기 위해 작업(같으면 덮어씌워짐)
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB 로 제한
+})
+
+try {
+  fs.accessSync('uploads')
+} catch (error) {
+  console.log('uploads 폴더가 없으므로 생성합니다.');
+  fs.mkdirSync('uploads');
+}
+// 이미지 업로드 라우터, upload.single/array/fields/none
+router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
+  console.log(req.files);
+  res.json(req.files.map((x) => x.filename));
+})
+
 // 게시글 작성
 router.post('/', isLoggedIn, async (req, res, next) => { // POST /post
   try {

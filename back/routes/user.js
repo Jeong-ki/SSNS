@@ -181,7 +181,7 @@ router.get('/followings', isLoggedIn, async (req, res, next) => { // GET /user/f
   }
 });
 
-// 팔로우 제거
+// 팔로워 제거
 router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => { // DELETE /user/follower/1
   try {
     const user = await User.findOne({ where: { id: req.user.userId }});
