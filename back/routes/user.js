@@ -2,11 +2,43 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { User, Post } = require('../models'); // db.User
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
+router.get('/', async (req, res, next) => { // GET /user
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ['password'], // 비밀번호만 빼고 가져오기
+        },
+        include: [{
+          model: Post,
+          attributes: ['id'], // id만 가져옴, 데이터 효율을 위해
+        }, {
+          model: User,
+          as: 'Followings',
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Followers',
+          attributes: ['id'],
+        }]
+      })
+      return res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // signup
-router.post('/', async (req, res, next) => { // POST /user/
+router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
   console.log('back user')
   try {
     // 이메일 중복체크
@@ -68,7 +100,7 @@ router.post('/login', (req, res, next) => {
 }); // POST /user/login
 
 // logout
-router.post('/logout', (req, res) => { // POST /user/logout
+router.post('/logout', isLoggedIn, (req, res) => { // POST /user/logout
   req.logout();
   req.session.destory();
   res.send('ok');
